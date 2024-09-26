@@ -4,6 +4,7 @@ import minus from "../../assets/minus.png";
 import search from "../../assets/search.png";
 import { useState } from "react";
 import ItemChat from "./ItemChat";
+import AddUser from "./addUser";
 function ChatList() {
   const [mode, setMode] = useState(false);
   return (
@@ -40,6 +41,7 @@ function ChatList() {
         <ItemChat />
         <ItemChat />
       </div>
+      {mode && <AddUser />}
     </div>
   );
 }
