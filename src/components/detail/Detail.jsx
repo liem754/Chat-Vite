@@ -4,12 +4,13 @@ import arrowDown from "../../assets/arrowDown.png";
 import download from "../../assets/download.png";
 
 import { useState } from "react";
+import { auth } from "../../lib/firebase";
 
 function Detail() {
   const [show, setShow] = useState(false);
   return (
-    <div className="flex-1 p-3 ">
-      <div className="flex flex-col items-center border-b border-b-[#dddddd35] py-4 justify-center">
+    <div className="flex-1 p-3 text-sm">
+      <div className="flex flex-col items-center border-b border-b-[#dddddd35] justify-center mt-2">
         <img
           src={avatar}
           alt="avatar"
@@ -137,6 +138,12 @@ function Detail() {
       </div>
       <button className="border-none outline-none w-full py-2 bg-red-400 text-white rounded-md mt-3">
         Block User
+      </button>
+      <button
+        onClick={() => auth.signOut()}
+        className="border-none outline-none w-full py-2 bg-black text-white rounded-md mt-3"
+      >
+        Log out
       </button>
     </div>
   );

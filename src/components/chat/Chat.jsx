@@ -24,7 +24,7 @@ function Chat() {
           <img
             src={avatar}
             alt="avatar"
-            className="w-[50px] h-[50px] rounded-[50%]"
+            className="w-[45px] h-[45px] rounded-[50%]"
           />
           <div className="">
             <span className="text-md">Name</span>
