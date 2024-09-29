@@ -4,19 +4,44 @@ import arrowDown from "../../assets/arrowDown.png";
 import download from "../../assets/download.png";
 
 import { useState } from "react";
-import { auth } from "../../lib/firebase";
+import { auth, db } from "../../lib/firebase";
+import { useChatStore } from "../../lib/chatStore";
+import { useUserStore } from "../../lib/useStore";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 function Detail() {
   const [show, setShow] = useState(false);
+  const { currentUser } = useUserStore();
+
+  const {
+    isReceiverBlocked,
+    isCurrentUserBlocked,
+
+    changeBlock,
+    user,
+  } = useChatStore();
+
+  const handleBlock = async () => {
+    if (!user) return;
+    const userRef = doc(db, "users", currentUser.id);
+    try {
+      await updateDoc(userRef, {
+        blocked: isReceiverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
+      });
+      changeBlock();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex-1 p-3 text-sm">
       <div className="flex flex-col items-center border-b border-b-[#dddddd35] justify-center mt-2">
         <img
-          src={avatar}
+          src={user?.avatar || avatar}
           alt="avatar"
           className="w-[70px] h-[70px] rounded-[50%] text-center"
         />
-        <p className="text-lg mt-3">Name</p>
+        <p className="text-lg mt-3">{user?.username}</p>
         <span>lorem</span>
       </div>
 
@@ -136,8 +161,15 @@ function Detail() {
           </div>
         </div>
       </div>
-      <button className="border-none outline-none w-full py-2 bg-red-400 text-white rounded-md mt-3">
-        Block User
+      <button
+        onClick={handleBlock}
+        className="border-none outline-none w-full py-2 bg-red-400 text-white rounded-md mt-3"
+      >
+        {isCurrentUserBlocked
+          ? "You are Block"
+          : isReceiverBlocked
+          ? "User Block"
+          : "Block User"}
       </button>
       <button
         onClick={() => auth.signOut()}

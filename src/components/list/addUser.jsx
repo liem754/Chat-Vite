@@ -42,7 +42,14 @@ function AddUser() {
         messages: [],
         createdAt: serverTimestamp(),
       });
-
+      await updateDoc(doc(userchatsRef, user.id), {
+        chats: arrayUnion({
+          chatId: newchatref.id,
+          lastMessage: "",
+          receiverId: currentUser.id,
+          updatedAt: Date.now(),
+        }),
+      });
       await updateDoc(doc(userchatsRef, currentUser.id), {
         chats: arrayUnion({
           chatId: newchatref.id,

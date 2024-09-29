@@ -41,11 +41,10 @@ function Login() {
       const rs = await createUserWithEmailAndPassword(auth, email, password);
       const imgUrl = await upload(avatar.file);
       await setDoc(doc(db, "users", rs.user.uid), {
-        avatar: imgUrl,
+        ...(imgUrl !== "" ? { avatar: imgUrl } : { avatar: "" }),
         username,
         email,
         id: rs.user.uid,
-
         block: [],
       });
       await setDoc(doc(db, "userchats", rs.user.uid), {

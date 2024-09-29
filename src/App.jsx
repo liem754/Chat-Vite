@@ -7,9 +7,12 @@ import { useUserStore } from "./lib/useStore";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./lib/firebase";
+import { useChatStore } from "./lib/chatStore";
 
 function App() {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
+  const { chatId } = useChatStore();
+
   useEffect(() => {
     const check = onAuthStateChanged(auth, (user) => {
       fetchUserInfo(user?.uid);
@@ -19,7 +22,8 @@ function App() {
       check();
     };
   }, [fetchUserInfo]);
-  console.log({ isLoading, currentUser });
+
+  console.log(chatId);
 
   return (
     <div className="main">
@@ -34,8 +38,8 @@ function App() {
           ) : (
             <div className="flex h-[95vh]">
               <List user={currentUser} />
-              <Chat user={currentUser} />
-              <Detail user={currentUser} />
+              {chatId !== null && <Chat user={currentUser} />}
+              {chatId !== null && <Detail user={currentUser} />}
             </div>
           )}
         </div>

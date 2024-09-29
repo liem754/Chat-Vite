@@ -9,7 +9,7 @@ function UserInfo() {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
 
   return (
-    <div className="flex items-center justify-between">
+    <div className=" px-4 flex items-center justify-between">
       <div className=" flex items-center gap-4">
         <img
           src={currentUser.avatar}
